@@ -2,14 +2,12 @@ from functools import reduce
 with open('input.txt', 'r') as f:
     input = list(map(lambda x: x.strip(), f.readlines()))
 
-def bin_dec(x,y):
-    return int(x)*2+int(y)
 
 def first():
     matrix = list(map(list, zip(*input)))
 
-    gamma = reduce(bin_dec, [max(set(lst), key=lst.count) for lst in matrix], 0)
-    epsilon = reduce(bin_dec, [min(set(lst), key=lst.count) for lst in matrix], 0)
+    gamma = int("".join(max(set(lst), key=lst.count) for lst in matrix), 2)
+    epsilon = int("".join(min(set(lst), key=lst.count) for lst in matrix), 2)
 
     print(f"gamma {gamma}")
     print(f"epsilon {epsilon}")
@@ -18,8 +16,6 @@ def first():
 
 def second():
     i = 0
-    oxy = []
-    co2 = []
 
     input1 = input.copy()
 
@@ -37,8 +33,8 @@ def second():
         input2 = list(filter(lambda x: x[i] == a, input2))
         i += 1
 
-    oxy = reduce(bin_dec, [char for char in input1[0]])
-    co2 = reduce(bin_dec, [char for char in input2[0]])
+    oxy = int(input1[0], 2)
+    co2 = int(input2[0], 2)
 
     print(f"Oxy = {oxy}")
     print(f"CO2 = {co2}")
