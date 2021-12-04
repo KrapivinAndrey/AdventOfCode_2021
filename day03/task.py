@@ -1,4 +1,3 @@
-from functools import reduce
 with open('input.txt', 'r') as f:
     input = list(map(lambda x: x.strip(), f.readlines()))
 
