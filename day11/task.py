@@ -40,15 +40,13 @@ with open("input.txt", "r") as f:
             matrix_row.append(octopus(int(a)))
         matrix.append(matrix_row)
 
-steps = 100
+step = 0
 height = width = 10
 
-flashing = 0
-
-for step in range(steps):
-
+while True:
+    step += 1
     # phase 1: Adding power and flashing
-
+    flashing = 0
     queue = list(itertools.product(range(10), range(10)))
 
     while queue:
@@ -85,4 +83,6 @@ for step in range(steps):
         for j in range(10):
             flashing += matrix[i][j].check()
 
-    print(flashing)
+    if flashing == width * height:
+        print(step)
+        break
