@@ -1,3 +1,5 @@
+from collections import Counter
+
 paths = {}
 
 with open("input.txt", "r") as f:
@@ -16,14 +18,28 @@ def countPath(v, visited):
         return 1
     else:
         new_visited = visited.copy()
-        if v.islower():
-            new_visited.append(v)
+        new_visited.append(v)
         s = 0
         for to in paths[v]:
-            if to not in new_visited:
+            if can_visit(to, new_visited):
                 s += countPath(to, new_visited)
         return s
 
 
-v = ["start"]
-print(countPath("start", v))
+def can_visit(t, visited):
+    if t == "end":
+        return True
+    elif t == "start":
+        return False
+    elif t.isupper():
+        return True
+    elif t not in visited:
+        return True
+    else:
+        c = [visited.count(x) for x in set(visited) if x.islower()]
+        return 2 not in c
+
+
+
+w = []
+print(countPath("start", w))
