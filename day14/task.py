@@ -24,7 +24,8 @@ def new_step(my_set):
 
     return new
 
-drop = dict(Counter([recipe[i:i+2] for i in range(0, len(recipe) - 1)]))
+
+drop = dict(Counter([recipe[i : i + 2] for i in range(0, len(recipe) - 1)]))
 
 for i in range(40):
     drop = new_step(drop)
@@ -34,4 +35,4 @@ for sym, val in drop.items():
     stats[sym[0]] = stats.get(sym[0], 0) + val
     stats[sym[1]] = stats.get(sym[1], 0) + val
 
-print(max(stats.values())/2 - min(stats.values())/2)
+print((max(stats.values()) - min(stats.values())) / 2)
