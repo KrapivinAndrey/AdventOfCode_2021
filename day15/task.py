@@ -1,10 +1,4 @@
-matrix = []
-with open("input.txt") as f:
-    for line in f.readlines():
-        matrix.append(list(map(lambda x: int(x), [x for x in line.strip()])))
-
-min_risk = sum(matrix[-1]) + sum([matrix[i][0] for i in range(len(matrix))]) - matrix[0][0] - matrix[-1][0]
-min_path = []
+import numpy as np
 
 def get_near(x, y):
     near = []
@@ -20,39 +14,30 @@ def get_near(x, y):
         _4 = (x, y + 1)
 
     if x > y:
-        near = [_4, _3, _1, _2]
+        near = [_3, _4, _1, _2]
     else:
         near = [_2, _3, _4, _1]
 
     return near
 
+def bfs():
 
-def risk(vertex):
-    return sum([matrix[j][i] for i, j in vertex])
+    total = np.ones_like(matrix) * inf
+    total[0, 0] = 0
+    query = [(0, 0)]
+    visited = 0
 
+    while visited < len(query):
+        x, y = query[visited]
+        visited += 1
+        for nx, ny in get_near(x, y):
+            if total[nx, ny] > total[x, y] + matrix[nx, ny]:
+                total[nx, ny] = total[x, y] + matrix[nx, ny]
+                query.append((nx, ny))
 
-def dfs(x, y, visited = None):
-    global min_risk
-    global min_path
+    print(total[-1][-1])
 
-    if visited is None:
-        visited = []
+matrix = np.genfromtxt('input.txt', dtype=int, delimiter=1)
+inf = matrix.sum().sum()
 
-    visited.append((x, y))
-
-    if risk(visited) >= min_risk:
-        return None
-    elif x == len(matrix[0]) - 1 and y == len(matrix) - 1:
-        min_risk = risk(visited)
-        print(min_risk)
-        min_path = visited
-        return None
-
-    for next_x, next_y in get_near(x, y):
-        if (next_x, next_y) not in visited:
-            dfs(next_x, next_y, visited.copy())
-    return visited
-
-
-dfs(0, 0)
-print(min_risk - matrix[0][0])
+bfs()
