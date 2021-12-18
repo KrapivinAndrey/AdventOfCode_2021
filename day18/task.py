@@ -21,8 +21,9 @@ def split(value: str) -> str:
         block = int(result[0])
         a = int(block / 2)
         b = block - a
+        return value.replace(str(block), f"[{a},{b}]", 1)
 
-    return value.replace(str(block), f"[{a},{b}]", 1)
+    return value
 
 
 def explode(value: str) -> str:
@@ -34,7 +35,7 @@ def explode(value: str) -> str:
             deep += 1
             left = i
         elif a == "]":
-            if deep >= 4:
+            if deep > 4:
                 right = i
                 block = value[left + 1:right].split(",")
 
@@ -74,4 +75,30 @@ def replace_right(part, num):
     return part
 
 
-print(explode("[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]"))
+with open("input.txt") as f:
+    tasks = list(map(lambda x: x.strip(), f.readlines()))
+
+work = None
+for task in tasks:
+    if work is None:
+        work = task
+        continue
+    else:
+        work = f"[{work},{task}]"
+
+    while True:
+        new_mean = explode(work)
+        if new_mean != work:
+            work = new_mean
+            continue
+        else:
+            new_mean = split(work)
+            if new_mean != work:
+                work = new_mean
+                continue
+        break
+
+print(magnitude(work))
+
+
+
