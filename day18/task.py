@@ -1,5 +1,5 @@
 import re
-
+import itertools
 
 def magnitude(value: str) -> int:
     regexp = r"(\[(\d+),(\d+)\])"
@@ -78,6 +78,23 @@ def replace_right(part, num):
 with open("input.txt") as f:
     tasks = list(map(lambda x: x.strip(), f.readlines()))
 
+
+def calculate(example):
+    while True:
+        new_mean = explode(example)
+        if new_mean != example:
+            example = new_mean
+            continue
+        else:
+            new_mean = split(example)
+            if new_mean != example:
+                example = new_mean
+                continue
+        break
+
+    return example
+
+
 work = None
 for task in tasks:
     if work is None:
@@ -85,20 +102,20 @@ for task in tasks:
         continue
     else:
         work = f"[{work},{task}]"
+        work = calculate(work)
 
-    while True:
-        new_mean = explode(work)
-        if new_mean != work:
-            work = new_mean
-            continue
-        else:
-            new_mean = split(work)
-            if new_mean != work:
-                work = new_mean
-                continue
-        break
 
 print(magnitude(work))
 
+max_mean = 0
+for i in range(len(tasks)):
+    for j in range(len(tasks)):
 
+        if i == j:
+            continue
 
+        x = calculate(f"[{tasks[i]},{tasks[j]}]")
+        y = calculate(f"[{tasks[j]},{tasks[i]}]")
+        max_mean = max(max_mean, magnitude(x), magnitude(y))
+
+print(max_mean)
