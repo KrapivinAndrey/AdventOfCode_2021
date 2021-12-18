@@ -28,7 +28,7 @@ def all_dots(vx, vy):
     x_new = y_new = 0
     x_y = [(x_new, y_new)]
     t = 0
-    while y_new > y0:
+    while y_new > y0: # пока не пролетели мимо
 
         x_new = x_y[t - 1][0] + vx
         y_new = x_y[t - 1][1] + vy
@@ -42,10 +42,12 @@ def all_dots(vx, vy):
 y_max = []
 all_possible = set()
 for vx in range(vx_min, x1+1):
-    for vy in range(y0, -y0+1):
+
+    for vy in range(y0, -y0+1): # скорость возврат совпадает со скоростью запуска
+
         x_y = all_dots(vx, vy)
         for x, y in x_y:
-            if x0 <= x <= x1 and y0 <= y <= y1:
+            if x0 <= x <= x1 and y0 <= y <= y1: # хоть одна попала в область
                 all_possible.add((vx, vy))
                 y_max.append(max([i[1] for i in x_y]))
                 break
