@@ -67,6 +67,7 @@ class Package:
             self.needs -= subpack.length
         elif self.length_type == 1:
             self.needs -= 1
+        self.data += subpack.data
 
     def __repr__(self):
         return f"v: {self.version} t: {self.type} mean: {self.mean}"
